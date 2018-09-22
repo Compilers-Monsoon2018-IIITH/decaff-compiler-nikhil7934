@@ -1,0 +1,36 @@
+class Program {
+	int a[100];
+	int binarysearch(int st, int en, int x){
+		if(st < en){
+			int mid;
+			mid = st + (en-st)/2;
+			if(a[mid]==x){
+				return mid;
+			}
+			if(a[mid] > x){
+				return binarysearch(st,mid-1,x);
+			}
+			else{
+				return binarysearch(mid+1,en,x);
+			}
+		}
+		return -1;
+	}
+	void main(){
+		int n;
+		callout("scanf", "%d", &n);
+		for i=0,n-1{
+			callout("scanf", "%d", &a[i]);
+		}
+		int x;
+		callout("scanf", "%d", &x);
+		int pla;
+		pla = binarysearch(0, n-1, x);
+		if( pla==-1){
+			callout("printf", "It is not there in Array\n");
+		}
+		else{
+			callout("printf", "It is at %d position in array\n",pla);
+		}
+	}
+}
