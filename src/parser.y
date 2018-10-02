@@ -2,65 +2,70 @@
 #include <stdio.h>	
 %}
 
-%token ID
+%token ID hex_literal decimal_literal char_literal arrayID true false string_literal method_call location
 %left '+' '-'
 %left '*' '/'
 
 %%
 
-expr : '(' expr ')'
-	 |  expr '+' expr
-	 |  expr '-' expr
-	 |  expr '*' expr
-	 |  expr '/' expr
-	 |  ID
-	 ;
+expr   : location
+	   | method_call
+	   | literal
+	   | expr bin_op expr
+	   | '-' expr
+	   | '!' expr
+	   | '(' expr ')'
+	   ;
+	   
 
-expr : location
-	 | method_call
-	 | literal
-	 | expr bin_op expr
-	 | '-' expr
-	 | '!' expr
-	 | '(' expr ')'
-	 ;
-location : id
-		 | id '[' expr ']'
+
+bin_op   : arth_op
+		 | rel_op
+		 | eq_op
+		 | cond_op
 		 ;
-literal : int_literal
-		| char_literal
-		| bool_literal
-		;
-bin_op : arith_op
-		| rel_op
-		| eq_op
-		| cond_op
-		;
-arith_op : '+'
-		 |	'-'
-		 |	'*'
-		 |	'/'
-		 |	'%'
+
+arth_op   : '+'
+		  | '-'
+		  | '*'
+		  | '/'
+		  | '%'
+		  ;
+
+rel_op   : '<'
+		 | '>'
+		 | '<''='
+		 | '>''='
 		 ;
-rel_op : '<'
-		| '>'
-		| '<='
-		| '>='
+
+eq_op   : '=''='
+		| '!''='
 		;
-eq_op : '=='
-		| '!='
-		;
-cond_op : '&&'
-		| '||'
-		;
-id : ID 
-	| ID NUM
-	;
+
+cond_op   : '&''&'
+		  | '|''|'
+		  ;
+
+
+literal   : int_literal
+		  | char_literal
+		  | bool_literal
+		  ;
+
+		  				 		  		 
+
+bool_literal : true
+			 | false
+			 ;
+
+int_literal : decimal_literal
+			| hex_literal
+			;
 
 
 %%
 
-main(int argc, char **argv)
+void main(int argc, char **argv)
 {
 	yyparse();
 	printf("Parsing Over\n");
