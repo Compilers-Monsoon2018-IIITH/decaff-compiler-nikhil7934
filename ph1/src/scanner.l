@@ -1,66 +1,71 @@
 %{
-#include<stdio.h>
+#include <stdio.h>
 #include "parser.tab.h"
-int lineno = 0;
 extern int yylex();
+int linenum=0;
 %}
 
-delim [ \t\n]
-ws {delim}+
-alpha [A-Za-z]
+alphabet [a-zA-Z]
 digit [0-9]
-comments "//".*
-id {alpha}({alpha}|{digit})*
-number {digit}+(\.{digit}+)?(E[+-]?{digit}+)?
-hexit 0x({digit}|[a-fA-F])+
+number {digit}+
+id ({alphabet}|_)({alphabet}|{digit}|_)*
+hexnumber 0x({digit}[a-fA-F])+
 character (\\n|\\t|\\'|\\\\|\\\"|[^\\"'])
+charlit [']{character}[']
+strlit ["]{character}*["]
+comments "//".*
 
+%%
 
-"class" {  return CLASS;}
-"{" {  return LC;}
-"}" { return RC;}
-"(" { return LP;}
-")" {return RP;}
-"[" {return LS;}
-"]" {return RS;}
-";" { return SEMICOLON;}
-"!" { return NOT;}
+"class" 			{return CLASS;}
+"void"			    {return VOID;}
+"callout"			{return CALLOUT;}
+"if"			    {return IF;}
+"else"			    {return ELSE;}
+"for"			    {return FOR;}
+"break"			    {return BREAK;}
+"continue"			{return CONTINUE;}
+"int"				{return INT;}
+"boolean"			{return BOOL;}
+"true"				{return TRUE;}
+"false"				{return FALSE;}
+"return"			{return RETURN;}
+{id}                {return ID;}
+{number}          	{return NUM;}
+{hexnumber}         {return HEX;}
+{strlit}	    	{return STRLIT;}
+{charlit}       	{return CHARLIT;}
+"("					{return '(';}
+")"					{return ')';}
+"{"					{return '{';}
+"}"					{return '}';}
+"["					{return '[';}
+"]"					{return ']';}
+"!"					{return '!';}
+"+"					{return '+';}
+"-"					{return '-';}
+"*"					{return '*';}
+"/"					{return '/';}
+"%"					{return '%';}
+"<"					{return '<';}
+">"					{return '>';}
+"="					{return '=';}
+"=="				{return EQEQ;}
+">="				{return GTEQ;}
+"<="				{return LTEQ;}
+"!="				{return NOTEQ;}
+"+="				{return PLUSEQ;}
+"-="				{return MINUSEQ;}
+"&&"				{return AND;}
+"||"				{return OR;}
+"\""				{return '"';}
+"'"					{return '\'';}
+","					{return ',';}
+";"					{return ';';}
+{comments}			return COMMENTS;
+[ \t]				{ }
+\n		     		{++linenum;}
+.					{ printf("Line No %d: Unrecognized Character\n",linenum);}
 
-"return" { return RETURN;}
-"+" {return ADD;}
-"-" {return MINUS;}
-"*" {return MULTIPLY;}
-"/" {return DIVIDE;}
-"%" return REMAINDER;
-"=" {return EQUAL;}
-"+=" {return PLUSEQUAL;}
-"-=" {return MINUSEQUAL;}
-
-"continue" {return CONTINUE;}
-"void" {return VOID;}
-"int"|"boolean" {return TYPE;}
-"while" {return WHILE;}
-
-"for" {return FOR;}
-
-"if" {return IF;}
-"else" {return ELSE;}
-"break" return BREAK;
-"callout" return CALLOUT;
-">"|"<"|">="|"<="  {return ROP;}
-"&&" {return ANDAND;}
-"||" {return OROR;}
-"=="|"!=" return EOP;
-true|false return BOOLIT;
-
-{delim} {;}
-"," return COMMA;
-{comments} {;}
-{id} return ID;
-{number} return NUMBER;
-{hexit} return HEXIT;
-{character} return CHARACTER;
-
-\"{character}*\" return STRINGIT;
 %%
 

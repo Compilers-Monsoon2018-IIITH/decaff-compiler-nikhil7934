@@ -1,129 +1,106 @@
 %{
 #include <stdio.h>
 int yylex();
-void yyerror(const char *s){printf("ERROR:
-%s\n",s);}	
+void yyerror(char * s);	
 %}
 
-%token CLASS PROGRAM LC RC LP RP LS RS VOID INT BOOL WHILE FOR IF ELSE BREAK CONTINUE ROP COP EOP BOOLIT HEX DIG STOP COMMA EQ NUMBER ID
+%token CLASS VOID IF ELSE BREAK CONTINUE FOR RETURN
+%token ID CHARLIT STRLIT INT BOOL NUM HEX CHAR
+%token AND OR MINUSEQ PLUSEQ LTEQ GTEQ NOTEQ EQEQ
+%token CALLOUT FALSE TRUE COMMENTS
 
-%token  SEMICOLON NOT RETURN ADD MINUS MULTIPLY DIVIDE EQUAL CHARCTER STRINGIT CALLOUT CHARACTER HEXIT MINUSEQUAL PLUSEQUAL REMAINDER
-
-%token ANDAND OROR TYPE
-
-%start program
-%glr-parser
-
-%left NOT
-%left MULTIPLY DIVIDE REMAINDER
-%left ADD MINUS
-%left ROP
-%left EOP
-%left ANDAND OROR
+%left AND OR 
+%left '<' '>' 
+%left LTEQ GTEQ 
+%left EQEQ NOTEQ
+%left '+' '-'
+%left '*' '/'
 
 
-%%
+%% 
+program: CLASS ID '{' body '}'
 
-ASOP: EQUAL|PLUSEQUAL|MINUSEQUAL
+body: | field_dec body | method_dec body
 
-program: CLASS ID LC fieldmore RC
+field_dec: type var ';'
 
+var: variable | var ',' variable
 
-fieldmore: | field fieldmore | method fieldmore 
+variable: ID | ID '[' int_lit ']'
 
+method_dec: type ID '(' argums ')' block | VOID ID '(' argums ')' block 
 
-field: TYPE variables SEMICOLON
+argums: | type ID | argums ',' type ID
 
+block: '{' var_dec statements '}'
 
-variables: variable
-          | variables COMMA variable
+var_dec: | var_decl | var_dec
 
-variable: ID 
-        | ID LS NUMBER RS
+var_decl: type vars ';'
 
-method: VOID ID LP method_arguments RP block 
-       |TYPE ID LP method_arguments RP block 
+vars: ID | vars ',' ID
 
-method_arguments: | TYPE ID 
-                | method_arguments COMMA TYPE ID
+type: INT | BOOL
 
-block: LC var_declmore statementmore RC
+statements: | stment statements
 
-var_declmore: | var_decl var_declmore
-
-statementmore: | statement statementmore
-
-var_decl: TYPE mvariables SEMICOLON
-
-mvariables: ID
-          | mvariables COMMA ID
-
-statement: location ASOP expr SEMICOLON
-          | method_call SEMICOLON
-          | IF LP expr  RP block
-          | IF LP expr  RP block ELSE block
-          | FOR ID EQUAL expr COMMA expr block
-          | RETURN expr SEMICOLON
-          | RETURN SEMICOLON
-          | CONTINUE SEMICOLON
+stment: location assign_opr expr ';'
+          | method_call ';'
+          | IF '(' expr ')' block
+          | IF '(' expr ')' block ELSE block
+          | CONTINUE ';'
+          | BREAK ';'
+          | FOR ID '=' expr ',' expr block
+          | RETURN expr ';'
+          | RETURN ';'
           | block
-
-
-method_call: method_name LP  method_call_arguments  RP
-            | CALLOUT  LP stringit  RP
-            | CALLOUT LP stringit COMMA callout_argmore  RP
-
-callout_argmore: callout_arg | callout_argmore COMMA callout_arg
-
+assign_opr: '=' | PLUSEQ | MINUSEQ
+method_call: method_name'(' method_argu ')'
+               | CALLOUT '(' string_lit ',' callout  ')'
+               | CALLOUT '(' string_lit ')'
 method_name: ID
+callout: call_args | callout ',' call_args
+call_args: expr | string_lit
+method_argu: | expr | method_argu ',' expr
 
-location: ID
-        | ID LS expr  RS
+expr: location | method_call
+               | literal
+               | expr bin_opr expr
+               | '-' expr
+               | '+' expr
+               | '!' expr
+               | '(' expr ')'
+bin_opr: ari_opr | rel_opr | equ_opr | con_opr
 
-expr: location
-    | method_call
-    | literal
-    | MINUS expr
-    | NOT expr
-    | LP expr  RP
-    | expr ADD expr
-    | expr MINUS expr
-    | expr MULTIPLY expr
-    | expr DIVIDE expr
-    | expr REMAINDER expr
-    | expr ROP expr
-    | expr EOP expr
-    | expr ANDAND expr
-    | expr OROR expr
+ari_opr: '+' | '-' | '*' | '%' | '/'
 
-method_call_arguments: | expr | method_call_arguments COMMA expr
+rel_opr: '<' | '>' | LTEQ | GTEQ
 
-callout_arg: expr
-            | stringit
+equ_opr: EQEQ | NOTEQ
 
-literal: int_literal
-        | char_literal
-        | BOOLIT
+con_opr: AND | OR
 
+location: ID | ID '[' expr ']'
 
+literal: int_lit | char_lit | bool_lit
 
-int_literal: NUMBER | HEXIT
+int_lit: NUM | HEX
 
+bool_lit: TRUE | FALSE
 
-char_literal: CHARACTER
+char_lit: CHARLIT
 
-stringit: STRINGIT
-
+string_lit: STRLIT
 
 %%
 
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	yyparse();
 	printf("Parsing Over\n");
 }
 
-yyerror(char *s)
+void yyerror(char *s)
 {
 	fprintf(stderr, "error: %s\n", s);
 }
