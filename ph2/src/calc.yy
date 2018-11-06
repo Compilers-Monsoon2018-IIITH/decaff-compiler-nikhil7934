@@ -58,6 +58,7 @@
 {
 	int integerVal;
     class ASTnode* astnode;
+    
 }
 
 %type <astnode>	line expr 
@@ -102,6 +103,7 @@ expr:
 	;
 
 %%
+
 
 void decaf::Parser::error(const Parser::location_type& l,
 			    		  const std::string& m)

@@ -1,5 +1,7 @@
 // $Id$
-
+// This File starts the Construsting the AST(Abstract Syntax Tree)
+// based on the context free grammer provided for the Decaf Language
+// written in calc files.... 
 #include <iostream>
 #include <fstream>
 #include "driver.h"
@@ -14,35 +16,22 @@ int main()
     PostFixVisitor pfv;
     
     string line;
-    while( cout << "input: " &&
-	   getline(cin, line) &&
-	   !line.empty() )
+    while(cout << "input: " && getline(cin, line) && !line.empty())
     {
 	    
 	    bool result = driver.parse_string(line, "input");
-
-	    if (result)
+	    if(result)
     	{
-            if (ast.pRoot != NULL ) {
-                BinaryASTnode *bnode;
-                TernaryASTnode *tnode;
-                IntLitASTnode *inode;
-
-                cout << "Postfix Form: " << endl; 
-
-                bnode = dynamic_cast<BinaryASTnode *>(ast.pRoot);
-                if (bnode != NULL)
-                    pfv.visit(*bnode);
-
-                tnode = dynamic_cast<TernaryASTnode *>(ast.pRoot);
-                if (tnode != NULL)
-                    pfv.visit(*tnode);
-
-                inode = dynamic_cast<IntLitASTnode *>(ast.pRoot);
-                if (inode != NULL)
-                    pfv.visit(*inode);
-                
-                 cout <<  endl; 
+            if(ast.pRoot != NULL ) 
+            {
+            	ProgramASTnode *pnode;
+            	cout<< "Construsting AST......." << endl;
+            	pnode = dynamic_cast<ProgramASTnode *>(ast.pRoot);
+            	if(pnode!=NULL)
+            	{
+            		pfv.visit(*pnode);
+            	}
+                cout <<  endl; 
             }
             ast.clearAST();
 	    }
