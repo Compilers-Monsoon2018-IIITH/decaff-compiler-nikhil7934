@@ -22,7 +22,7 @@
 %debug
 
 /* start symbol is named "start" */
-%start line
+%start program
 
 /* write out a header file containing the token defines */
 %defines
@@ -31,7 +31,7 @@
 %skeleton "lalr1.cc"
 
 /* namespace to enclose parser in */
-%name-prefix="decaf"
+%name-prefix "decaf"
 
 /* set the parser's class identifier */
 %define "parser_class_name" "Parser"
@@ -57,76 +57,76 @@
 %union
 {
 	int integerVal;
-    class ASTnode* astnode;
-    std::string *sval;
-    class ProgramASTnode* prnode;
-	class VarASTnode* varnode;
-	class VarDeclnode* vardeclnode;
-	class VarDeclsnode* vardeclsnode;
-	class UnaryASTnode* unarynode;
-	class LocationASTnode* locationnode;
-	class BoolLitASTnode* boolnode;
-	class CharLitASTnode* charnode;
-	class IntLitASTnode* intnode;
-	class FieldDeclnode* fieldnode;
-	class VariableASTnode* variablenode;
-	class VariablesASTnode* variablesnode;
-	class MethodNameASTnode* methodnamenode;
-	class StringLitASTnode* stringnode;
-	class CalloutargASTnode* calloutargnode;
-	class CalloutASTnode* calloutnode;
-	class MethodargASTnode* methodargnode;
-	class ArgumentsASTnode* argumentnode;
-	class MethodcallASTnode* methodcallnode;
-	class StatementlocASTnode* statlocnode;
-	class MethodstatASTnode* methodstatnode;
-	class StatementifASTnode* ifnode;
-	class StatementifelseASTnode* ifelsenode;
-	class StatementforASTnode* fornode;
-	class StatementreturnexprASTnode* returnnode;
-	class StatementterminateASTnode* termnode;
-	class StatementblockASTnode* blocknode;
-	class StatementsASTnode* statementsnode;
-	class BlockASTnode* block;
-	class MethoddeclASTnode* method_declnode;
-	class FunctionASTnode* functionnode;
-	class Statement* statenode;
-	class Expr* expnode;
+    class ASTnode* astanode;
+	std::string *stgval;
+	class ProgASTnode* proganode;
+	class VarbASTnode* varanode;
+	class VarbDeclnode* vardeclanode;
+	class VarbDeclsnode* vardeclsmulanode;
+	class UnaryASTnode* unaryanode;
+	class LocationASTnode* locateanode;
+	class BoolLitASTnode* boollitanode;
+	class CharLitASTnode* charlitanode;
+	class IntLitASTnode* intlitanode;
+	class FieldDeclnode* fielddecanode;
+	class VariableASTnode* variableanode;
+	class VariablesASTnode* mulvariableanode;
+	class MethodNameASTnode* methodnameanode;
+	class StringLitASTnode* stringlitanode;
+	class ArgumentsASTnode* argumentanode;
+	class MethodcallASTnode* methodcallanode;
+	class StatementlocASTnode* statlocanode;
+	class MethodstatASTnode* methodsastanode;
+	class StatementifASTnode* ifanode;
+	class StatementifelseASTnode* ifelseanode;
+	class CalloutargASTnode* calloutargmanode;
+	class CalloutASTnode* calloutanode;
+	class MethodargASTnode* methodargmanode;
+	class StatementforASTnode* foranode;
+	class StatementreturnexprASTnode* returnanode;
+	class StatementterminateASTnode* termanode;
+	class StatementblockASTnode* blockanode;
+	class StatementsASTnode* statementsanode;
+	class BlockASTnode* blocka;
+	class MethoddeclASTnode* method_declanode;
+	class FunctionASTnode* funcastanode;
+	class Statement* stmentanode;
+	class Expr* expranode;
 }
 
-%type <astnode>	line expr 
-%type <prnode> program
-%type <varnode> vars 
-%type <locationnode> location
-%type <vardeclnode> var_declaration
-%type <vardeclsnode> var_declarations
-%type <boolnode> bool_literal
-%type <charnode> char_literal
-%type <intnode> int_literal
-%type <fieldnode> field_decl
-%type <variablenode> variable
-%type <variablesnode> var
-%type <methodnamenode> method_name
-%type <stringnode> string_literal
-%type <calloutargnode> calloutarg
-%type <calloutnode> callout
-%type <methodargnode> method_arg
-%type <argumentnode> arguments
-%type <methodcallnode> method_call
-%type <statlocnode> statement1
-%type <methodstatnode> statement2
-%type <ifnode> statement3
-%type <ifelsenode> statement4
-%type <fornode> statement5
-%type <returnnode> statement6
-%type <termnode> statement7
-%type <blocknode> statement8
-%type <statementsnode> statements
-%type <block> block
-%type <method_declnode> method_decl
-%type <functionnode> function
-%type <statenode> statement
-%type <expnode> expr
+%type <astanode> literal
+%type <proganode> program
+%type <varanode> vars 
+%type <locateanode> location
+%type <vardeclanode> vardecl
+%type <vardeclsmulanode> vardeclsmul
+%type <boollitanode> bool_literal
+%type <charlitanode> char_literal
+%type <intlitanode> int_literal
+%type <fielddecanode> field_decl
+%type <variableanode> vari
+%type <mulvariableanode> var
+%type <methodnameanode> method_name
+%type <stringlitanode> string_literal
+%type <calloutargmanode> calloutarg
+%type <calloutanode> callout
+%type <methodargmanode> method_arg
+%type <argumentanode> arguments
+%type <methodcallanode> method_call
+%type <statlocanode> statement1
+%type <methodsastanode> statement2
+%type <ifanode> statement3
+%type <ifelseanode> statement4
+%type <foranode> statement5
+%type <returnanode> statement6
+%type <termanode> statement7
+%type <blockanode> statement8
+%type <statementsanode> statements
+%type <blocka> block
+%type <method_declanode> method_decl
+%type <funcastanode> function
+%type <stmentanode> statement
+%type <expranode> expr
 
 //%destructor { delete $$; } expr
 
@@ -145,39 +145,34 @@
 %token END 0
 %token EOL
 %token<integerVal> NUM HEX
-%token<sval> ID INT BOOLEAN CHAR
-%token<sval> CALLOUT TRUE FALSE CHARLIT STRLIT
-%token<sval> LFB RFB SEMICOL COMMA LB RB LSB RSB PROGRAM
-%token<sval> CONTINUE IF FOR RETURN BREAK ELSE CLASS VOID
-%token<sval> PLUS MINUS MUL EQ DIV LT GT MOD NOT
-%token<sval> AND OR EQEQ NOTEQ GTEQ LTEQ PLUSEQ MINUSEQ
+%token<stgval> ID INT BOOLEAN CHAR
+%token<stgval> CALLOUT TRUE FALSE CHARLIT STRLIT
+%token<stgval> LFB RFB SEMICOL COMMA LB RB LSB RSB PROGRAM
+%token<stgval> CONTINUE IF FOR RETURN BREAK ELSE CLASS VOID
+%token<stgval> PLUS MINUS MUL EQ DIV LT GT MOD NOT
+%token<stgval> AND OR EQEQ NOTEQ GTEQ LTEQ PLUSEQ MINUSEQ
 %left PLUS MINUS
 %left MUL DIV
-%left AND OR 
-%left LT GT 
-%left LTEQ GTEQ 
-%left EQEQ NOTEQ
-%left LT LTEQ
-%left GT GTEQ
+%left AND OR LT GT LTEQ GTEQ
 
 %%
 
-program : CLASS PROGRAM LFB function RFB {$$=new ProgramASTnode($4);driver.ast.pRoot=$$;}
+program : CLASS PROGRAM LFB function RFB {$$=new ProgASTnode($4);driver.ast.pRoot=$$;}
 
-var : variable 					{ $$ = new VariablesASTnode();$$->push_back($1);}
-	| var COMMA variable		{ $$ = $1;$$->push_back($3);}
+var : vari 					{ $$ = new VariablesASTnode();$$->push_back($1);}
+	| var COMMA vari		{ $$ = $1;$$->push_back($3);}
 
-variable : ID 						{ $$ = new VariableASTnode(*$1);}
-		 | ID LSB int_literal RSB	{ $$ = new VariableASTnode(*$1,$3);}
+vari : ID 						{ $$ = new VariableASTnode(*$1);}
+	| ID LSB int_literal RSB	{ $$ = new VariableASTnode(*$1,$3);}
 
-vars : ID 						{ $$ = new VarASTnode();$$->push_back(*$1);}
-	 | vars COMMA ID			{ $$ = $1;$$->push_back(*$3);}
+vars : ID 						{ $$ = new VarbASTnode();$$->push_back(*$1);}
+	| vars COMMA ID			{ $$ = $1;$$->push_back(*$3);}
 
-var_declaration : INT vars SEMICOL {$$ = new VarDeclnode(*$1,$2,";");}
-				| BOOLEAN vars SEMICOL {$$ = new VarDeclnode(*$1,$2,";");}
+vardecl : INT vars SEMICOL {$$ = new VarbDeclnode(*$1,$2,";");}
+				| BOOLEAN vars SEMICOL {$$ = new VarbDeclnode(*$1,$2,";");}
 
-var_declarations : 					{$$ = new VarDeclsnode();}	
-		 		 | var_declaration var_declarations {$2->push_back($1);$$ = $2;}
+vardeclsmul : 					{$$ = new VarbDeclsnode();}	
+		 		 | vardecl vardeclsmul {$2->push_back($1);$$ = $2;}
 				 
 
 location : ID 						{ $$ = new LocationASTnode(*$1);}
@@ -279,7 +274,7 @@ statement8:block							{$$ = new StatementblockASTnode($1);}
 statements : 								{$$ = new StatementsASTnode();}
 			| statement statements			{$$ = $2;$$->push_back($1);}
 
-block : LFB var_declarations statements RFB		{$$ = new BlockASTnode($2,$3);}
+block : LFB vardeclsmul statements RFB		{$$ = new BlockASTnode($2,$3);}
 
 method_decl : INT ID LB arguments RB block		{$$ = new MethoddeclASTnode(*$1,*$2,$4,$6);}
 			| BOOLEAN ID LB arguments RB block	{$$ = new MethoddeclASTnode(*$1,*$2,$4,$6);}
@@ -293,8 +288,7 @@ function : 										{$$ = new FunctionASTnode();}
 %%
 
 
-void decaf::Parser::error(const Parser::location_type& l,
-			    		  const std::string& m)
+void decaf::Parser::error(const Parser::location_type& l, const std::string& m)
 {
     driver.error(l, m);
 }

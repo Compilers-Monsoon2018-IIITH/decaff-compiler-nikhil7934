@@ -1,7 +1,5 @@
-
-
 CXX = g++
-CXXFLAGS = -W -Wall -Wextra -ansi -g
+CXXFLAGS = -W -Wall -Wextra -ansi -g -w
 INCLUDE = -I/usr/local/opt/flex/include/ -I./
 
 all: calc

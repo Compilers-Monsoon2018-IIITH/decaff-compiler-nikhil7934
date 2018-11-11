@@ -55,11 +55,94 @@ typedef decaf::Parser::token_type token_type;
     yylloc->step();
 %}
 
-[0-9]+      {
-                yylval->integerVal = atoi(yytext);
-                return token::INT_LITERAL;
-            }
-
+"class"			    {yylval->stgval = new std::string(yytext); 
+						return token::CLASS;}
+"Program"           {yylval->stgval = new std::string(yytext); 
+						return token::PROGRAM;}
+"void"			    {yylval->stgval = new std::string(yytext); 
+						return token::VOID;}
+"callout"			{yylval->stgval = new std::string(yytext); 
+						return token::CALLOUT;}
+"int"				{yylval->stgval = new std::string(yytext); 
+						return token::INT;}
+"boolean"			{yylval->stgval = new std::string(yytext); 
+						return token::BOOLEAN;}
+"for"			    {yylval->stgval = new std::string(yytext); 
+						return token::FOR;}
+"break"			    {yylval->stgval = new std::string(yytext); 
+						return token::BREAK;}
+"continue"			{yylval->stgval = new std::string(yytext); 
+						return token::CONTINUE;}
+"if"			    {yylval->stgval = new std::string(yytext); 
+						return token::IF;}
+"else"			    {yylval->stgval = new std::string(yytext); 
+						return token::ELSE;}
+"true"				{yylval->stgval = new std::string(yytext); 
+						return token::TRUE;}
+"false"				{yylval->stgval = new std::string(yytext); 
+						return token::FALSE;}
+"return"			{yylval->stgval = new std::string(yytext); 
+						return token::RETURN;}
+[a-zA-Z]([a-zA-Z]|[0-9])* {yylval->stgval = new std::string(yytext); 
+								return token::ID;}
+[0-9]+          	{yylval->integerVal = std::atoi(yytext); 
+						return token::NUM;}
+0x([0-9][a-fA-F])+  {yylval->integerVal = std::atoi(yytext); 
+						return token::HEX;}
+"("					{yylval->stgval = new std::string(yytext); 
+						return token::LB;}
+")"					{yylval->stgval = new std::string(yytext); 
+						return token::RB;}
+"{"					{yylval->stgval = new std::string(yytext); 
+						return token::LFB;}
+"}"					{yylval->stgval = new std::string(yytext); 
+						return token::RFB;}
+"["					{yylval->stgval = new std::string(yytext); 
+						return token::LSB;}
+"]"					{yylval->stgval = new std::string(yytext); 
+						return token::RSB;}
+"!"					{yylval->stgval = new std::string(yytext); 
+						return token::NOT;}
+"+"					{yylval->stgval = new std::string(yytext); 
+						return token::PLUS;}
+"-"					{yylval->stgval = new std::string(yytext); 
+						return token::MINUS;}
+"*"					{yylval->stgval = new std::string(yytext); 
+						return token::MUL;}
+"/"					{yylval->stgval = new std::string(yytext); 
+						return token::DIV;}
+"%"					{yylval->stgval = new std::string(yytext); 
+						return token::MOD;}
+"<"					{yylval->stgval = new std::string(yytext); 
+						return token::LT;}
+">"					{yylval->stgval = new std::string(yytext); 
+						return token::GT;}
+"="					{yylval->stgval = new std::string(yytext); 
+						return token::EQ;}
+"=="				{yylval->stgval = new std::string(yytext); 
+						return token::EQEQ;}
+">="				{yylval->stgval = new std::string(yytext); 
+						return token::GTEQ;}
+"<="				{yylval->stgval = new std::string(yytext); 
+						return token::LTEQ;}
+"!="				{yylval->stgval = new std::string(yytext); 
+						return token::NOTEQ;}
+"+="				{yylval->stgval = new std::string(yytext); 
+						return token::PLUSEQ;}
+"-="				{yylval->stgval = new std::string(yytext); 
+						return token::MINUSEQ;}
+"&&"				{yylval->stgval = new std::string(yytext); 
+						return token::AND;}
+"||"				{yylval->stgval = new std::string(yytext); 
+						return token::OR;}
+","					{yylval->stgval = new std::string(yytext); 
+						return token::COMMA;}
+";"					{yylval->stgval = new std::string(yytext); 
+						return token::SEMICOL;}
+\"(\\n|\\t|\\'|\\\\|\\\"|[^\\"'])*\"   {yylval->stgval = new std::string(yytext); 
+											return token::STRLIT;}
+"'"(\\n|\\t|\\'|\\\\|\\\"|[^\\"'])"'"   {yylval->stgval = new std::string(yytext); 
+											return token::CHARLIT;}
 
  /* gobble up white-spaces */
 [ \t\r]+    {
