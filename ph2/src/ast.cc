@@ -24,14 +24,14 @@ int main()
     	{
             if(ast.pRoot != NULL ) 
             {
-            	ProgramASTnode *pnode;
-            	cout<< "Construsting AST......." << endl;
-            	pnode = dynamic_cast<ProgramASTnode *>(ast.pRoot);
-            	if(pnode!=NULL)
+            	ProgASTnode *prgnode;
+            	cout<< "Building AST......." << endl;
+            	prgnode = dynamic_cast<ProgASTnode *>(ast.pRoot);
+            	if(prgnode!=NULL)
             	{
-            		pfv.visit(*pnode);
+            		pfv.visit(*prgnode);
             	}
-                cout <<  endl; 
+                cout << "Done..\n" <<endl; 
             }
             ast.clearAST();
 	    }
