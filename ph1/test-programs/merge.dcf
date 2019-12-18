@@ -1,0 +1,67 @@
+class Program {
+	int a[100], l[100], r[100];
+	void mergearr(int st, int mi, int en){
+		int i, j, k;
+		int p, q;
+		p = mi-st+1;
+		q = en-mi;
+		for h=0,p-1{
+			l[h] = a[st+h];
+		}
+		for h=0,q-1{
+			r[h] = a[mi+h+1];
+		}
+		i = 0;
+		j = 0;
+		k = st;
+		for gh=0,10{
+			if((i<p && j<q) && gh=10){
+				gh=0;
+			}
+			if(i<p && j<q){
+				if(l[i]<=r[j]){
+					a[k] = l[i];
+					i=i+1;
+				}
+				else{
+					a[k] = r[j];
+					j=j+1;
+				}
+			}
+			else{
+				break;
+			}
+
+		}
+		for gh=i,n1-1{
+			a[k] = l[gh];
+			k=k+1;
+		}
+		for gh=j, n2-1{
+			a[k] = r[gh];
+			k=k+1;
+		}
+	}
+	void mergesort(int st, int en){
+		int mi;
+		if( st < en){
+			mi = st + (en -st)/2;
+			mergesort(st, mi);
+			mergesort(mi+1, en);
+			mergearr(st, mi, en);
+		}
+	}
+	void main(){
+		int n;
+		callout("scanf", "%d", &n);
+		for i=0,n-1{
+			callout("scanf", "%d", &a[i]);
+		}
+		mergesort(0, n-1);
+		for i=0,n-2{
+			callout("printf", "%d ", a[i]);
+		}
+		callout("printf", "%d\n",a[n-1]);
+	}
+	
+}
